@@ -1,0 +1,40 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String
+  password  String
+  role      Role      @default(CLIENT)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+
+  @@map("user")
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+  ROOT
+}
+
+model Chat{
+  id        Int       @id @default(autoincrement())
+  user_ids  Int[]
+}
+
+model Message{
+  id        Int       @id @default(autoincrement())
+  chat_id   Int
+  sender_id Int
+  text      String
+}
+
+
